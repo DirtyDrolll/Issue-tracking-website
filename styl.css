@@ -301,6 +301,14 @@ table td {
 .hidden{
     display: none !important;
 }
+/* Form*/
+.form-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
 
 /* The "Fade & Slide" effect */
 @keyframes slideIn {
