@@ -109,6 +109,11 @@ document.querySelector('#btn-issues').addEventListener('click',(e) => ViewPage(e
 document.querySelector('#btn-people').addEventListener('click',(e) => ViewPage(e,'people-content'));
 document.querySelector('#btn-projects').addEventListener('click',(e) => ViewPage(e,'projects-content'));
 
+document.querySelector('.add-btn').addEventListener('click', function() {
+    const modal = new bootstrap.Modal(document.getElementById('issueModal'));
+    modal.show();
+});
+
 // Load table function
 const tableBody = document.getElementById('recentIssuesTable');
 
