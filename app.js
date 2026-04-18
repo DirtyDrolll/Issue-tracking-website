@@ -109,3 +109,51 @@ document.querySelector('#btn-issues').addEventListener('click',(e) => ViewPage(e
 document.querySelector('#btn-people').addEventListener('click',(e) => ViewPage(e,'people-content'));
 document.querySelector('#btn-projects').addEventListener('click',(e) => ViewPage(e,'projects-content'));
 
+// Load table function
+const tableBody = document.getElementById('recentIssuesTable');
+
+function loadTable() {
+    tableBody.innerHTML = "";
+
+    const issues = BugStorage.getAllIssues();
+
+    issues.forEach(issue => {
+        let row = `<tr>
+            <td>${issue.summary}</td>
+            <td>${issue.project}</td>
+            <td>${issue.priority}</td>
+            <td>${issue.status}</td>
+            <td>${issue.date}</td>
+        </tr>`;
+        tableBody.innerHTML += row;
+    });
+}
+
+// form submit
+const issueForm = document.getElementById('issueForm');
+
+issueForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const summary = document.getElementById('summary').value;
+    const description = document.getElementById('description').value;
+    const person = document.getElementById('person').value;
+    const project = document.getElementById('project').value;
+    const status = document.getElementById('status').value;
+    const priority = document.getElementById('priority').value;
+
+    try {
+        BugStorage.addIssue(summary, description, priority, status, person, project);
+
+        loadTable();
+        issueForm.reset();
+
+    } catch (err) {
+        alert(err.message);
+    }
+});
+
+// load data on page start
+document.addEventListener('DOMContentLoaded', function() {
+    loadTable();
+});
