@@ -54,7 +54,7 @@ getNextId(items, prefix) {
         // "003" becomes 3
         let currentNumber = parseInt(parts[1], 10);
         
-        // Check if this number is bigger than what we've seen
+        // Check if this number is bigger than what we have seen
         if (currentNumber > highestNumber) {
             highestNumber = currentNumber;
         }
@@ -103,7 +103,7 @@ getNextId(items, prefix) {
         const date = today.toISOString().split('T')[0];
         
         const newIssue = {
-        id: this.getNextId(issues), // format:"Bug 003"
+        id: this.getNextId(issues), // format:"BUG-003"
         summary: this.sanitize(summary),      
         description: this.sanitize(description), 
         priority: this.sanitize(priority),// high, medium, low
@@ -169,7 +169,7 @@ getNextId(items, prefix) {
     addPerson(name, surname, email, username) {
         const people = this.getAllPeople();
         const newPerson = {
-            id: this.getNextId(people), // "B7K2" format
+            id: this.getNextId(people), // "PER-002" format
             name: name,
             surname: surname,
             email: email,
@@ -228,7 +228,7 @@ getNextId(items, prefix) {
     addProject(name) {
         const projects = this.getAllProjects();
         const newProject = {
-            id: this.getNextId(projects),// "M9K4" format
+            id: this.getNextId(projects),// "PRJ-001" format
             name: name
         };
         projects.push(newProject);
