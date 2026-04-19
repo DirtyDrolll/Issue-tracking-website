@@ -130,6 +130,7 @@ body {
     background-image: url(download.jpg);
     border-radius: 50%;
     margin-left: 10px;
+    cursor: pointer;
 }
 
 /* Content Body */
@@ -314,6 +315,37 @@ table td {
     border: 1px solid rgba(255, 255, 255, 0.8);
 
     margin-bottom: 20px;
+}
+
+.popup-style{
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    border: 2px solid green;
+    border-radius: 20px;
+    font-size: small;
+    z-index: 9999;
+
+    opacity: 0;
+    pointer-events: none;
+
+    height: 40px;
+    width: 150px;
+    position:fixed; 
+    background:rgba(59, 59, 59, 0.336);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    color:#fff;
+    padding:10px;
+    transform: translateX(-50%) translateY(-150%);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.popup-style.show-popup {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0); /* Slides down into place */
 }
 
 /* The "Fade & Slide" effect */
