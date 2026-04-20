@@ -386,6 +386,47 @@ table td {
     transform: translateX(-50%) translateY(0); /* Slides down into place */
 }
 
+
+.prio-style{
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.prio-high { 
+    background-color: rgb(202, 45, 124); color: rgb(255, 255, 255); border: 1px solid rgb(245, 179, 179); 
+}
+
+.prio-medium { 
+    background-color: rgb(255, 199, 44); color: rgb(255, 255, 255); border: 1px solid rgb(255, 236, 154); 
+}
+
+.prio-low { 
+    background-color: rgb(45, 202, 163); color: rgb(255, 255, 255); border: 1px solid rgb(179, 245, 182); 
+}
+
+
+.status-style{
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    display: inline-block;
+}
+
+.status-open { 
+    background-color: rgb(49, 128, 231); color: rgb(255, 255, 255);
+}
+
+.status-resolved { 
+    background-color: red; color: rgb(255, 255, 255); 
+}
+
+.status-overdue { 
+    background-color: green; color: rgb(255, 255, 255); 
+}
+
 /* The "Fade & Slide" effect */
 @keyframes slideIn {
     from {

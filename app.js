@@ -82,6 +82,35 @@ function animateCounter(elementId, targetValue) {
     }, intervalSpeed);
 }
 
+function prioDisplay(priority){
+
+    const issuePrio = priority.toLowerCase()
+
+    if (issuePrio === "high"){
+        return 'prio-style prio-high' ;       
+    }else if(issuePrio === "medium"){
+        return 'prio-style prio-medium' ;
+    }else if (issuePrio === "low"){
+        return 'prio-style prio-low' ;
+    }
+        return 'prio-style' ;
+}
+
+
+function statusDisplay(status){
+
+    const issueStatus = status.toLowerCase()
+
+    if (issueStatus === "open"){
+        return 'status-style status-open' ;       
+    }else if(issueStatus === "resolved"){
+        return 'status-style status-resolved' ;
+    }else if (issueStatus === "overdue"){
+        return 'status-style status-overdue' ;
+    }
+        return 'status-style' ;
+}
+
 
 function dynamicStats() {
     // Run the animation for each ID
@@ -108,11 +137,14 @@ function loadSummarisedTable() {
     let rowsHtml = ""; // Use a plural name to stay organized
     
     sumContainer.forEach(item => {
+        const priostyle = prioDisplay(item.priority);
+        const statusStyle =statusDisplay(item.status);
+
         rowsHtml += `<tr>
             <td>${item.summary}</td>
             <td>${item.project}</td>
-            <td>${item.priority}</td>
-            <td>${item.status}</td>
+            <td><span class="${priostyle}">${item.priority}</span></td>
+            <td><span class="${statusStyle}">${item.status}</span></td>
             <td>${item.date}</td>
         </tr>`;
     });
@@ -134,12 +166,15 @@ function loadDetailedTable() {
     const issues = BugStorage.getAllIssues(); // Get real data
 
     issues.forEach(item => {
+        const priostyle = prioDisplay(item.priority);
+        const statusStyle =statusDisplay(item.status);
+
         let row = `<tr>
             <td><small class="text-muted">${item.id}</small></td>
             <td><strong>${item.summary}</strong></td>
             <td>${item.project}</td>               
-            <td>${item.priority.toUpperCase()}</td>
-            <td>${item.status}</td>                 
+            <td><span class="${priostyle}">${item.priority}</span></td>
+            <td><span class="${statusStyle}">${item.status}</span></td>
             <td>
                 <img src="https://ui-avatars.com/api/?name=${item.assignedTo}&background=random" 
                      style="width:24px; border-radius:50%; margin-right:5px;">
