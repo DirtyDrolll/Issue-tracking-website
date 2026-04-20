@@ -181,7 +181,12 @@ function loadDetailedTable() {
                 ${item.assignedTo}
             </td>
             <td>${item.date}</td>
-            <td><span class="text-dark">N/A</span></td> </tr>`;
+            <td>
+              <button class="btn btn-sm btn-warning" onclick="editIssue('${item.id}')">
+               Edit
+               </button>
+            </td>
+             </tr>`;
         
         detailtablebody.innerHTML += row;
     });
@@ -189,6 +194,24 @@ function loadDetailedTable() {
 
 loadDetailedTable();
 
+function editIssue(id) {
+    const issues = BugStorage.getAllIssues();
+    const issue = issues.find(item => item.id === id);
+
+    if (!issue) return;
+
+    document.getElementById('summary').value = issue.summary;
+    document.getElementById('description').value = issue.description;
+    document.getElementById('person').value = issue.assignedTo;
+    document.getElementById('project').value = issue.project;
+    document.getElementById('status').value = issue.status;
+    document.getElementById('priority').value = issue.priority;
+
+    document.getElementById('issueModalForm').setAttribute('data-edit-id', id);
+
+    const modal = new bootstrap.Modal(document.getElementById('issueModal'));
+    modal.show();
+}
 
 const allsections = document.querySelectorAll('.view-section');//select all divs with that class so they can be hidden first in the fuction
 
