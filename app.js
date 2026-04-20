@@ -206,9 +206,10 @@ issueForm.addEventListener('submit', function(e) {
 
     try {
         BugStorage.addIssue(summary, description, priority, status, person, project);
-        displayPopup("Issue Created Successfully!");
-
-        loadTable();
+         loadSummarisedTable();
+         loadDetailedTable();
+        dynamicStats();
+        displayPopup("Issue Created Successfully!"); 
         issueForm.reset();
 
     } catch (err) {
