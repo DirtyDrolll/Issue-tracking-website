@@ -227,7 +227,7 @@ document.querySelector('.add-btn').addEventListener('click', function() {
 
 
 // form submit
-const issueForm = document.getElementById('issueForm');
+const issueForm = document.getElementById('issueModalForm');
 
 issueForm.addEventListener('submit', function(e) {
     e.preventDefault();
