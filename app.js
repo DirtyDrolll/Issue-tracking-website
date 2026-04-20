@@ -246,6 +246,7 @@ document.querySelector('.add-btn').addEventListener('click', function() {
 });
 
 // form submit
+let editingId = null;
 const issueForm = document.getElementById('issueModalForm');
 
 issueForm.addEventListener('submit', function(e) {
@@ -259,7 +260,16 @@ issueForm.addEventListener('submit', function(e) {
     const priority = document.getElementById('priority').value;
 
     try {
-        BugStorage.addIssue(summary, description, priority, status, person, project);
+        if (editingId) {
+    BugStorage.updateIssue(editingId, summary, description, priority, status, person, project);
+    displayPopup("Issue Updated Successfully!");
+    editingId = null;
+     } 
+        else {
+    BugStorage.addIssue(summary, description, priority, status, person, project);
+    displayPopup("Issue Created Successfully!");
+}
+        
          loadSummarisedTable();
          loadDetailedTable();
         dynamicStats();
@@ -275,6 +285,25 @@ issueForm.addEventListener('submit', function(e) {
 document.addEventListener('DOMContentLoaded', function() {
     loadSummarisedTable();
     loadDetailedTable();
+function editIssue(id) {
+    const issues = BugStorage.getAllIssues();
+    const issue = issues.find(i => i.id === id);
+
+    if (!issue) return;
+
+    document.getElementById('summary').value = issue.summary;
+    document.getElementById('description').value = issue.description;
+    document.getElementById('person').value = issue.assignedTo;
+    document.getElementById('project').value = issue.project;
+    document.getElementById('status').value = issue.status;
+    document.getElementById('priority').value = issue.priority;
+
+    editingId = id;
+
+    const modal = new bootstrap.Modal(document.getElementById('issueModal'));
+    modal.show();
+}
+    
 });
 
 function displayPopup(text){
