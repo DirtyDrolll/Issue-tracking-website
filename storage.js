@@ -118,7 +118,7 @@ getNextId(items, prefix) {
         return newIssue;
     },
     // Update existing bug( modifies a bug's fields)
-    updateIssue(id, updatedData) {
+     updateIssue(id, summary, description, priority, status, assignedTo, project){
         const issues = this.getAllIssues();
         
         for (let i = 0; i < issues.length; i++) {
