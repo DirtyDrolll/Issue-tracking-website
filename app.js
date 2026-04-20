@@ -190,7 +190,6 @@ function loadDetailedTable() {
 loadDetailedTable();
 
 
-
 const allsections = document.querySelectorAll('.view-section');//select all divs with that class so they can be hidden first in the fuction
 
 function ViewPage(event,viewid){
@@ -218,13 +217,10 @@ document.querySelector('#btn-people').addEventListener('click',(e) => ViewPage(e
 document.querySelector('#btn-projects').addEventListener('click',(e) => ViewPage(e,'projects-content'));
 
 
-
 document.querySelector('.add-btn').addEventListener('click', function() {
     const modal = new bootstrap.Modal(document.getElementById('issueModal'));
     modal.show();
 });
-
-
 
 // form submit
 const issueForm = document.getElementById('issueModalForm');
@@ -254,9 +250,9 @@ issueForm.addEventListener('submit', function(e) {
 
 // load data on page start
 document.addEventListener('DOMContentLoaded', function() {
-    loadTable();
+    loadSummarisedTable();
+    loadDetailedTable();
 });
-
 
 function displayPopup(text){
     const message = document.getElementById('popup-message');
