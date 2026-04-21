@@ -385,8 +385,7 @@ function loadDetailedTable() {
                  Mark Fixed
                 </button>
              </td> 
-             <td>${item.dueDate ? item.dueDate : 'Not set'}</td> 
-            <td>${item.targetDate ? item.targetDate : 'Not set'}</td> 
+            
         </tr>
     `).join('');
 }
