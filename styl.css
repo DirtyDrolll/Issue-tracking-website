@@ -256,11 +256,11 @@ body {
 }
 
 
-/* YOUR TABLE BORDERS */
+/*TABLE BORDERS */
 table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;    
+    table-layout: auto;    
 }
 
 table th {
@@ -438,3 +438,66 @@ table td {
         transform: translateY(0);
     }
 }
+
+/*table styling*/
+#peopleList .table-container,
+#projectsList .table-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 0;
+    overflow: hidden;
+}
+
+#peopleList table,
+#projectsList table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: sans-serif;
+}
+
+
+#peopleList thead th,
+#projectsList thead th {
+    background-color: #445db1d7;
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 30px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+
+#peopleList tbody td,
+#projectsList tbody td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #b5cbec;
+    font-size: 0.9rem;
+    background-color: rgba(4, 56, 199, 0.452);
+    color: #113801d8;
+    vertical-align: middle;
+}
+
+/*Hover effect on rows*/
+#peopleList tbody tr:hover,
+#projectsList tbody tr:hover {
+    background-color: #6827ff2d;
+    transition: 0.2s;
+}
+
+
+/* Delete buttons styling */
+#peopleList .btn-sm,
+#projectsList .btn-sm {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    border-color: #646899;
+    border-radius: 10px;
+    color: #ffffff;
+    background-color: rgb(1, 24, 88);
+}
+
+
