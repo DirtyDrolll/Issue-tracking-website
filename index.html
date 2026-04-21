@@ -39,28 +39,29 @@
         </header>
 
         <section class="page-body">
-        
+            <div id="popup-container" class="popup-style"><p id="popup-message"></p></div>
+            
             <div id="dashboard-content" class="view-section">
                 <div class="stats_container">
 
                     <div class="total_stats">
                         <span class="stat-label">TOTAL ISSUES</span>
-                        <div class="stat-value">24</div>
+                        <div id="total-count" class="stat-value"></div>
                     </div>
 
                     <div class="open_stats">
                         <span class="stat-label">OPEN</span>
-                        <div class="stat-value">04</div>                    
+                        <div id="open-count" class="stat-value"></div>                    
                     </div>
 
                     <div class="resolved_stats">
                         <span class="stat-label">RESOLVED</span>
-                        <div class="stat-value">12</div>                    
+                        <div id="resolved-count" class="stat-value"></div>                    
                     </div>
 
                     <div class="overdue_stats">
                         <span class="stat-label">OVERDUE</span>
-                        <div class="stat-value">08</div>                    
+                        <div id="overdue-count" class="stat-value"></div>                    
                     </div>
 
                 </div>                
@@ -94,27 +95,109 @@
             </div>
 
             <div id="issues-content" class="view-section hidden">
-               <p>This is the issue page</p>
+
+                <h3>All Issues</h3>
+                <div id="issuesList">
+                    <div class="table-container">
+                    <h5 class="section-title">Recent Issues</h5>
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Summary</th>
+                                    <th>Project</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Assignee</th>
+                                    <th>Date Created</th>
+                                    <th>Target Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailedIssuesTable">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>  
+                </div>
             </div>
-
-
 
             <div id="people-content" class="view-section hidden">
-               <p>This is the issue page</p>
-            </div>
+               <h3>People</h3>
 
+<form id="personForm" class="mb-3">
+    <input type="text" id="personName" class="form-control mb-2" placeholder="Name">
+    <input type="text" id="personSurname" class="form-control mb-2" placeholder="Surname">
+    <input type="email" id="personEmail" class="form-control mb-2" placeholder="Email">
+    <input type="text" id="personUsername" class="form-control mb-2" placeholder="Username">
+    <button class="btn btn-success">Add Person</button>
+</form>
+
+            <div id="peopleList"></div>
+            </div>
 
 
             <div id="projects-content" class="view-section hidden">
-               <p>This is the issue page</p>
-            </div>
+               <h3>Projects</h3>
 
+<form id="projectForm" class="mb-3">
+    <input type="text" id="projectName" class="form-control mb-2" placeholder="Project Name">
+    <button class="btn btn-warning">Add Project</button>
+</form>
+
+<div id="projectsList"></div>
+            </div>
 
         </section>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="storage.js"></script>
     <script src="app.js"></script>
+
+<div class="modal fade" id="issueModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Create Issue</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <form id="modalIssueForm" data-edit-id="">
+
+            <input type="text" id="summary" class="form-control mb-2" placeholder="Summary" required>
+
+            <textarea id="description" class="form-control mb-2" placeholder="Description" required></textarea>
+
+            <input type="text" id="person" class="form-control mb-2" placeholder="Assigned To" required>
+
+            <input type="text" id="project" class="form-control mb-2" placeholder="Project" required>
+
+            <select id="status" class="form-control mb-2" required>
+                <option value="open">Open</option>
+                <option value="resolved">Resolved</option>
+                <option value="overdue">Overdue</option>
+            </select>
+
+            <select id="priority" class="form-control mb-2" required>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary w-100">Add Issue</button>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+    
 </body>
 </html>

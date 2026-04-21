@@ -130,6 +130,7 @@ body {
     background-image: url(download.jpg);
     border-radius: 50%;
     margin-left: 10px;
+    cursor: pointer;
 }
 
 /* Content Body */
@@ -300,6 +301,130 @@ table td {
 
 .hidden{
     display: none !important;
+}
+/* Form*/
+.form-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    padding: 25px;
+    border-radius: 15px;
+
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+
+    margin-bottom: 20px;
+}
+
+.form-card input,
+.form-card textarea,
+.form-card select {
+    width: 100%;
+    padding: 10px 12px;
+    
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(6px);
+
+    font-size: 14px;
+    outline: none;
+
+    transition: all 0.2s ease;
+}
+
+.form-card input:focus,
+.form-card textarea:focus,
+.form-card select:focus {
+    border: 1px solid rgb(67, 67, 255);
+    box-shadow: 0 0 0 2px rgba(67, 67, 255, 0.2);
+    background: white;
+}
+
+.form-card textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-card button {
+    margin-top: 10px;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 500;
+}
+
+.popup-style{
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    border: 2px solid green;
+    border-radius: 20px;
+    font-size: small;
+    z-index: 9999;
+
+    opacity: 0;
+    pointer-events: none;
+
+    height: 40px;
+    width: 150px;
+    position:fixed; 
+    background:rgba(59, 59, 59, 0.336);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    color:#fff;
+    padding:10px;
+    transform: translateX(-50%) translateY(-150%);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.popup-style.show-popup {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0); /* Slides down into place */
+}
+
+
+.prio-style{
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.prio-high { 
+    background-color: rgb(202, 45, 124); color: rgb(255, 255, 255); border: 1px solid rgb(245, 179, 179); 
+}
+
+.prio-medium { 
+    background-color: rgb(255, 199, 44); color: rgb(255, 255, 255); border: 1px solid rgb(255, 236, 154); 
+}
+
+.prio-low { 
+    background-color: rgb(45, 202, 163); color: rgb(255, 255, 255); border: 1px solid rgb(179, 245, 182); 
+}
+
+
+.status-style{
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    display: inline-block;
+}
+
+.status-open { 
+    background-color: rgb(49, 128, 231); color: rgb(255, 255, 255);
+}
+
+.status-overdue { 
+    background-color: red; color: rgb(255, 255, 255); 
+}
+
+.status-resolved { 
+    background-color: green; color: rgb(255, 255, 255); 
 }
 
 /* The "Fade & Slide" effect */
