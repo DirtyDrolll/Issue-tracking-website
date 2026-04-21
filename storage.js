@@ -91,7 +91,8 @@ getNextId(items, prefix) {
         return null;
     },
     // Add new issue - saves a bug report to storage
-    addIssue(summary, description, priority, status, assignedTo, project) {
+    //No status parameter! Status is always "open" for new issues
+    addIssue(summary, description, priority, assignedTo, project,dueDate) {
     //Input Validation for security checks 
         if (!summary || summary.trim() === '') throw new Error('Summary is required');
         if (summary.length > 200) throw new Error('Summary too long (max 200 chars)');
@@ -107,30 +108,43 @@ getNextId(items, prefix) {
         summary: this.sanitize(summary),      
         description: this.sanitize(description), 
         priority: this.sanitize(priority),// high, medium, low
-        status: this.sanitize(status),// open, resolved, overdue
+        status: "open",  // Always starts as "open"
         assignedTo: this.sanitize(assignedTo),
         project: this.sanitize(project),
-        date: date
+        date: date,
+        dueDate: dueDate || null,          // Optional deadline
+        fixedDate: null                    // Not fixed yet
         };
         // Adds to front so newest bugs show first
-        issues.push(newIssue);
+        issues.unshift(newIssue);
+       // Save the updated issues array back to localStorage
         localStorage.setItem(this.issuesKey, JSON.stringify(issues));
         return newIssue;
     },
     // Update existing bug( modifies a bug's fields)
-     updateIssue(id, summary, description, priority, status, assignedTo, project){
+    //// Status is automatically calculated from dates
+    updateIssue(id, updatedData) {
         const issues = this.getAllIssues();
         
         for (let i = 0; i < issues.length; i++) {
             if (issues[i].id === id) {
-                // Only update fields that were provided
+                // Update fields that were provided
                 if (updatedData.summary !== undefined) issues[i].summary = updatedData.summary;
                 if (updatedData.description !== undefined) issues[i].description = updatedData.description;
                 if (updatedData.priority !== undefined) issues[i].priority = updatedData.priority;
-                if (updatedData.status !== undefined) issues[i].status = updatedData.status;
                 if (updatedData.assignedTo !== undefined) issues[i].assignedTo = updatedData.assignedTo;
                 if (updatedData.project !== undefined) issues[i].project = updatedData.project;
+                if (updatedData.dueDate !== undefined) issues[i].dueDate = updatedData.dueDate;
+                if (updatedData.fixedDate !== undefined) issues[i].fixedDate = updatedData.fixedDate;
                 
+                // AUTO-CALCULATE STATUS (based on dates, NOT user input)
+                if (issues[i].fixedDate) {
+                    issues[i].status = "resolved";
+                } else if (issues[i].dueDate && new Date(issues[i].dueDate) < new Date()) {
+                    issues[i].status = "overdue";
+                } else {
+                    issues[i].status = "open";
+                }
                 localStorage.setItem(this.issuesKey, JSON.stringify(issues));
                 return true;// Issue found
             }
@@ -149,6 +163,13 @@ getNextId(items, prefix) {
         }
         
         localStorage.setItem(this.issuesKey, JSON.stringify(newIssues));
+    },
+
+     // markAsFixed (Sets today's date as fixedDate, status becomes "resolved")
+    markAsFixed(id) {
+        const today = new Date();
+        const fixedDate = today.toISOString().split('T')[0];
+        return this.updateIssue(id, { fixedDate: fixedDate });
     },
     
     // Functions for people
@@ -169,7 +190,7 @@ getNextId(items, prefix) {
     addPerson(name, surname, email, username) {
         const people = this.getAllPeople();
         const newPerson = {
-            id: this.getNextId(people), // "PER-002" format
+            id: this.getNextId(people,"PER"), // "PER-002" format
             name: name,
             surname: surname,
             email: email,
@@ -228,7 +249,7 @@ getNextId(items, prefix) {
     addProject(name) {
         const projects = this.getAllProjects();
         const newProject = {
-            id: this.getNextId(projects),// "PRJ-001" format
+            id: this.getNextId(projects,"PRJ"),// "PRJ-001" format
             name: name
         };
         projects.push(newProject);
@@ -248,6 +269,8 @@ getNextId(items, prefix) {
         }
         return false;
     },
+
+
      // Delete project(removes a project from storage)
     deleteProject(id) {
         let projects = this.getAllProjects();
@@ -332,6 +355,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Bug Storage Ready!');
 });
     
+
 
 
 
