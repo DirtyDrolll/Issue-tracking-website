@@ -116,6 +116,7 @@ getNextId(items, prefix) {
             localStorage.setItem(this.adminKey, JSON.stringify(defaultAdmin));
         }
     },
+    
 
     // Add new issue - saves a bug report to storage
     //No status parameter! Status is always "open" for new issues
