@@ -182,9 +182,8 @@ function loadDetailedTable() {
             </td>
             <td>${item.date}</td>
             <td>
-              <button class="btn btn-sm btn-warning" onclick="editIssue('${item.id}')">
-               Edit
-               </button>
+             <button class="btn btn-sm btn-warning" onclick="editIssue('${item.id}')">Edit</button>
+             <button class="btn btn-sm btn-danger" onclick="deleteIssue('${item.id}')">Delete</button>
             </td>
              </tr>`;
         
