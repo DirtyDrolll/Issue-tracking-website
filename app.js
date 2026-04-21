@@ -440,29 +440,32 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 5. Form Submission
-    const issueForm = document.getElementById('issueForm');
-    if (issueForm) {
-        issueForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            try {
-                BugStorage.addIssue(
-                    document.getElementById('summary').value,
-                    document.getElementById('description').value,
-                    document.getElementById('priority').value,
-                    document.getElementById('status').value,
-                    document.getElementById('person').value,
-                    document.getElementById('project').value
-                );
+    const issueForm = document.getElementById('modalIssueForm');
 
-                displayPopup("Issue Created Successfully!");
-                loadSummarisedTable();
-                loadDetailedTable();
-                dynamicStats();
-                issueForm.reset();
-                bootstrap.Modal.getInstance(document.getElementById('issueModal')).hide();
-            } catch (err) {
-                alert(err.message);
-            }
-        });
-    }
+if (issueForm) {
+    issueForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const summary = issueForm.querySelector('#summary').value;
+        const description = issueForm.querySelector('#description').value;
+        const person = issueForm.querySelector('#person').value;
+        const project = issueForm.querySelector('#project').value;
+        const status = issueForm.querySelector('#status').value;
+        const priority = issueForm.querySelector('#priority').value;
+
+        try {
+            BugStorage.addIssue(summary, description, priority, status, person, project);
+
+            loadSummarisedTable();
+            loadDetailedTable();
+            dynamicStats();
+
+            displayPopup("Issue Created Successfully!");
+            issueForm.reset();
+
+        } catch (err) {
+            alert(err.message);
+        }
+    });
+}
 });
