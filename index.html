@@ -156,6 +156,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="storage.js"></script>
+     <script src="info.js"></script>
     <script src="app.js"></script>
 
 <div class="modal fade" id="issueModal" tabindex="-1">
@@ -174,10 +175,17 @@
             <input type="text" id="summary" class="form-control mb-2" placeholder="Summary" required>
 
             <textarea id="description" class="form-control mb-2" placeholder="Description" required></textarea>
+           
+                 <select id="person" class="form-control mb-2" required>
+                    <option value="">Select Assignee</option>
+                          </select>
 
-            <input type="text" id="person" class="form-control mb-2" placeholder="Assigned To" required>
+    
+             <select id="project" class="form-control mb-2" required>
+                  <option value="">Select Project</option>
+                                  </select>
 
-            <input type="text" id="project" class="form-control mb-2" placeholder="Project" required>
+            
            
             <input type="date" id="dueDate" class="form-control mb-2" required>
 
