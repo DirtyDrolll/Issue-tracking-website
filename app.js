@@ -311,9 +311,9 @@ function displayPopup(text) {
     }, 3000);
 }
 
-/* ==========================================
-   2. DATA & TABLE RENDERING
-   ========================================== */
+////////////////////////////////////////////
+/*   2. DATA & TABLE RENDERING            */
+///////////////////////////////////////////
 
 function animateCounter(elementId, targetValue) {
     const displayElement = document.getElementById(elementId);
@@ -378,6 +378,8 @@ function loadDetailedTable() {
                 ${item.assignedTo}
             </td>
             <td>${item.date}</td>
+            <td><span class="text-dark">${item.dueDate}</span></td> 
+            <td><span class="text-dark">${item.fixedDate}</span></td> 
             <td>
                <button class="btn btn-sm btn-success" onclick="markFixed('${item.id}')">
                  Mark Fixed
