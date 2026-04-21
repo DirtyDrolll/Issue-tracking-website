@@ -473,3 +473,13 @@ if (issueForm) {
     });
 }
 });
+
+function markFixed(id) {
+    BugStorage.markAsFixed(id);
+
+    loadSummarisedTable();
+    loadDetailedTable();
+    dynamicStats();
+
+    displayPopup("Issue marked as resolved!");
+}
