@@ -385,6 +385,8 @@ function loadDetailedTable() {
                  Mark Fixed
                 </button>
              </td> 
+             <td>${item.dueDate ? item.dueDate : 'Not set'}</td> 
+            <td>${item.targetDate ? item.targetDate : 'Not set'}</td> 
         </tr>
     `).join('');
 }
@@ -432,6 +434,8 @@ document.addEventListener('DOMContentLoaded', function() {
     loadDetailedTable();
     dynamicStats();
     initChart();
+    loadPeopleList();
+    loadProjectsList();
     displayPopup("Bug Storage Ready!");
 
     // 3. Navigation Listeners
@@ -442,6 +446,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 4. Modal Trigger
     document.querySelector('.add-btn').addEventListener('click', () => {
+         populatePersonDropdown();   
+         populateProjectDropdown(); 
         new bootstrap.Modal(document.getElementById('issueModal')).show();
     });
 
@@ -458,6 +464,7 @@ if (issueForm) {
         const project = issueForm.querySelector('#project').value;
         const dueDate = issueForm.querySelector('#dueDate').value;
         const priority = issueForm.querySelector('#priority').value;
+        const targetDate = issueForm.querySelector('#targetDate').value;
 
         try {
             BugStorage.addIssue(summary, description, priority, person, project, dueDate);
@@ -476,6 +483,48 @@ if (issueForm) {
 }
 });
 
+    // Person Form Submission
+    const personForm = document.getElementById('personForm');
+    if (personForm) {
+        personForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('personName').value;
+            const surname = document.getElementById('personSurname').value;
+            const email = document.getElementById('personEmail').value;
+            const username = document.getElementById('personUsername').value;
+
+            //checks that all these fields have been filled in
+            if (!name || !surname || !email || !username) {
+                displayPopup("Please fill in all fields!");
+                return;
+            }
+            //loads values into people list
+            BugStorage.addPerson(name, surname, email, username);
+            loadPeopleList();
+            displayPopup("Person Added!");
+            personForm.reset();
+        });
+    }
+
+    // Project Form Submission
+    const projectForm = document.getElementById('projectForm');
+    if (projectForm) {
+        projectForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('projectName').value;
+            //checks that name is filled in
+            if (!name) {
+                displayPopup("Please enter a project name!");
+                return;
+            }
+            
+            BugStorage.addProject(name);
+            loadProjectsList();
+            displayPopup("Project Added!");
+            projectForm.reset();//clears form and resets values
+        });
+    };
+
 function markFixed(id) {
     BugStorage.markAsFixed(id);
 
@@ -484,4 +533,151 @@ function markFixed(id) {
     dynamicStats();
 
     displayPopup("Issue marked as resolved!");
+};
+/* ==========================================
+   5. PEOPLE & PROJECTS DISPLAY
+   ========================================== */
+
+//loads all people into a table
+function loadPeopleList() {
+    const peopleList = document.getElementById('peopleList');
+    if (!peopleList) return;
+
+    const people = BugStorage.getAllPeople();//gets people from locla storage
+    //checks if it is empty and displays a message
+    if (people.length === 0) {
+        peopleList.innerHTML = '<div class="alert alert-info">No people added yet. Use the form above to add team members.</div>';
+        return;
+    }
+    //table containing people
+    peopleList.innerHTML = `
+        <div class="table-container">
+            <div class="table-scroll">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr><th>ID</th><th>Name</th><th>Surname</th><th>Email</th><th>Username</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        ${people.map(person => `
+                            <tr>
+                                <td><small>${person.id}</small></td>
+                                <td>${person.name}</td>
+                                <td>${person.surname}</td>
+                                <td>${person.email}</td>
+                                <td>${person.username}</td>
+                                <td><button class="btn btn-sm btn-danger" onclick="deletePerson('${person.id}')">Delete</button></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
 }
+//loads all projects into a table
+function loadProjectsList() {
+    const projectsList = document.getElementById('projectsList');
+    if (!projectsList) return;
+
+//checks if projects are empty and returns a warning
+    const projects = BugStorage.getAllProjects();
+    
+    if (projects.length === 0) {
+        projectsList.innerHTML = '<div class="alert alert-info">No projects added yet. Use the form above to add projects.</div>';
+        return;
+    }
+    //projects table 
+    projectsList.innerHTML = `
+        <div class="table-container">
+            <div class="table-scroll">
+                <table class="table table-bordered">
+                    <thead><tr><th>ID</th><th>Project Name</th><th>Actions</th></tr></thead>
+                    <tbody>
+                        ${projects.map(project => `
+                            <tr>
+                                <td><small>${project.id}</small></td>
+                                <td>${project.name}</td>
+                                <td><button class="btn btn-sm btn-danger" onclick="deleteProject('${project.id}')">Delete</button></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+/* ==========================================
+   6. SEED INITIAL DATA (from info.js)
+   ========================================== */
+
+function seedInitialData() {
+    // Adds people from info file if the table is empty
+    if (typeof people !== 'undefined' && BugStorage.getAllPeople().length === 0) {
+        people.forEach(p => {
+            BugStorage.addPerson(p.name, p.surname, p.email, p.username);
+        });
+        console.log("People seeded from info.js");
+    }
+    
+    // Adds projects from info if the table is empty
+    if (typeof project !== 'undefined' && BugStorage.getAllProjects().length === 0) {
+        project.forEach(prj => {
+            BugStorage.addProject(prj.name);
+        });
+        console.log("Projects seeded from info.js");
+    }
+}
+
+// Deletes people and projects
+window.deletePerson = function(id) {
+    if (confirm('Delete this person?')) {
+        BugStorage.deletePerson(id);
+        loadPeopleList();
+        displayPopup("Person Deleted!");
+    }
+};
+
+window.deleteProject = function(id) {
+    if (confirm('Delete this project?')) {
+        BugStorage.deleteProject(id);
+        loadProjectsList();
+        displayPopup("Project Deleted!");
+    }
+};
+
+/* ==========================================
+   7. DROPDOWN POPULATION FOR ISSUE FORM
+   ========================================== */
+
+function populatePersonDropdown() {
+    const personSelect = document.getElementById('person');
+    if (!personSelect) return;
+    
+    const people = BugStorage.getAllPeople();
+    
+    personSelect.innerHTML = '<option value="">Select Assignee</option>';
+    
+    people.forEach(person => {
+        const fullName = `${person.name} ${person.surname}`;
+        const option = document.createElement('option');
+        option.value = fullName;
+        option.textContent = `${fullName} (${person.username})`;
+        personSelect.appendChild(option);
+    });
+};
+
+function populateProjectDropdown() {
+    const projectSelect = document.getElementById('project');
+    if (!projectSelect) return;
+    
+    const projects = BugStorage.getAllProjects();
+    
+    projectSelect.innerHTML = '<option value="">Select Project</option>';
+    
+    projects.forEach(project => {
+        const option = document.createElement('option');
+        option.value = project.name;
+        option.textContent = project.name;
+        projectSelect.appendChild(option);
+    });
+};
