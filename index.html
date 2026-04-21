@@ -111,6 +111,7 @@
                                     <th>Status</th>
                                     <th>Assignee</th>
                                     <th>Date Created</th>
+                                    <th>Due Date</th>
                                     <th>Target Date</th>
                                 </tr>   
                             </thead>
@@ -167,7 +168,7 @@
 
       <div class="modal-body">
 
-        <form id="issueForm">
+       <form id="modalIssueForm" data-edit-id=""> 
 
             <input type="text" id="summary" class="form-control mb-2" placeholder="Summary" required>
 
@@ -176,12 +177,8 @@
             <input type="text" id="person" class="form-control mb-2" placeholder="Assigned To" required>
 
             <input type="text" id="project" class="form-control mb-2" placeholder="Project" required>
-
-            <select id="status" class="form-control mb-2" required>
-                <option value="open">Open</option>
-                <option value="resolved">Resolved</option>
-                <option value="overdue">Overdue</option>
-            </select>
+           
+            <input type="date" id="dueDate" class="form-control mb-2" required>
 
             <select id="priority" class="form-control mb-2" required>
                 <option value="low">Low</option>

@@ -139,7 +139,7 @@ getNextId(items, prefix) {
         assignedTo: this.sanitize(assignedTo),
         project: this.sanitize(project),
         date: date,
-        dueDate: dueDate || null,          // Optional deadline
+        dueDate: dueDate ? this.sanitize(dueDate) : null,          // Optional deadline
         fixedDate: null                    // Not fixed yet
         };
         // Adds to front so newest bugs show first
