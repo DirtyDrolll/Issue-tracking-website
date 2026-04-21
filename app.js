@@ -261,19 +261,24 @@ issueForm.addEventListener('submit', function(e) {
 
     try {
         if (editingId) {
-    BugStorage.updateIssue(editingId, summary, description, priority, status, person, project);
-    displayPopup("Issue Updated Successfully!");
-    editingId = null;
-     } 
-        else {
-    BugStorage.addIssue(summary, description, priority, status, person, project);
-    displayPopup("Issue Created Successfully!");
-}
-        
-         loadSummarisedTable();
-         loadDetailedTable();
+            BugStorage.updateIssue(editingId, {
+                summary,
+                description,
+                priority,
+                status,
+                assignedTo: person,
+                project
+            });
+            displayPopup("Issue Updated Successfully!");
+            editingId = null;
+        } else {
+            BugStorage.addIssue(summary, description, priority, status, person, project);
+            displayPopup("Issue Created Successfully!");
+        }
+
+        loadSummarisedTable();
+        loadDetailedTable();
         dynamicStats();
-        displayPopup("Issue Created Successfully!"); 
         issueForm.reset();
 
     } catch (err) {
