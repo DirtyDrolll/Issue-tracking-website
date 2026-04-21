@@ -378,7 +378,11 @@ function loadDetailedTable() {
                 ${item.assignedTo}
             </td>
             <td>${item.date}</td>
-            <td><span class="text-dark">N/A</span></td> 
+            <td>
+               <button class="btn btn-sm btn-success" onclick="markFixed('${item.id}')">
+                 Mark Fixed
+                </button>
+             </td> 
         </tr>
     `).join('');
 }
@@ -450,11 +454,11 @@ if (issueForm) {
         const description = issueForm.querySelector('#description').value;
         const person = issueForm.querySelector('#person').value;
         const project = issueForm.querySelector('#project').value;
-        const status = issueForm.querySelector('#status').value;
+        const dueDate = issueForm.querySelector('#dueDate').value;
         const priority = issueForm.querySelector('#priority').value;
 
         try {
-            BugStorage.addIssue(summary, description, priority, status, person, project);
+            BugStorage.addIssue(summary, description, priority, person, project, dueDate);
 
             loadSummarisedTable();
             loadDetailedTable();
