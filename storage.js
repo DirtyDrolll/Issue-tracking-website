@@ -103,7 +103,7 @@ getNextId(items, prefix) {
         const date = today.toISOString().split('T')[0];
         
         const newIssue = {
-        id: this.getNextId(issues), // format:"BUG-003"
+        id: this.getNextId(issues,"BUG"), // format:"BUG-003"
         summary: this.sanitize(summary),      
         description: this.sanitize(description), 
         priority: this.sanitize(priority),// high, medium, low
