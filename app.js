@@ -212,6 +212,18 @@ function editIssue(id) {
     modal.show();
 }
 
+function deleteIssue(id) {
+    if (!confirm("Are you sure you want to delete this issue?")) return;
+
+    BugStorage.deleteIssue(id);
+
+    loadSummarisedTable();
+    loadDetailedTable();
+    dynamicStats();
+
+    displayPopup("Issue Deleted Successfully!");
+}
+
 const allsections = document.querySelectorAll('.view-section');//select all divs with that class so they can be hidden first in the fuction
 
 function ViewPage(event,viewid){
