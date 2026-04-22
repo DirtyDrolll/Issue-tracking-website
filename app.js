@@ -71,7 +71,7 @@ function loadSummarisedTable() {
 
     //stores only records that have the open status and within the 5 most recent issues
     const issues = BugStorage.getAllIssues().filter(item => 
-        item.status.toLowerCase() === 'open').reverse().slice(0, 5);;
+        item.status.toLowerCase() === 'open').reverse().slice(0, 5);
     
     sumtableBody.innerHTML = issues.map(item => 
        `<tr>
