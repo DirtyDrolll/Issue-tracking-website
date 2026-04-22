@@ -187,13 +187,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const targetDate = issueForm.querySelector('#dueDate').value;
 
             try {
-                BugStorage.addIssue(summary, description, priority, person, project, dueDate);
+                if (editId) {
+    BugStorage.updateIssue(editId, {
+        summary,
+        description,
+        priority,
+        assignedTo: person,
+        project,
+        dueDate
+    });
+
+    issueForm.dataset.editId = "";
+    displayPopup("Issue Updated Successfully!");
+} else {
+    BugStorage.addIssue(summary, description, priority, person, project, dueDate);
+    displayPopup("Issue Created Successfully!");
+}
 
                 loadSummarisedTable();
                 loadDetailedTable();
                 dynamicStats();
 
-                displayPopup("Issue Created Successfully!");
                 issueForm.reset();
 
             } catch (err) {
