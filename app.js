@@ -189,6 +189,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (issueForm) {
         issueForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            
+        const editId = issueForm.dataset.editId;
 
         const summary = issueForm.querySelector('#summary').value;
         const description = issueForm.querySelector('#description').value;
