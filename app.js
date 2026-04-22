@@ -84,7 +84,7 @@ function loadDetailedTable(data) {
 
     const issues = data || BugStorage.getAllIssues();   
     detailtablebody.innerHTML = issues.map(item => 
-       `<tr onclick="viewIssueDetails('${item.id}')" style="cursor: pointer;">
+       `<tr ondblclick="viewIssueDetails('${item.id}')" style="cursor: pointer;">
             <td><small class="text-muted">${item.id}</small></td>
             <td><strong>${item.summary}</strong></td>
             <td>${item.project}</td>               
