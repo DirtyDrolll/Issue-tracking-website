@@ -179,6 +179,16 @@ getNextId(items, prefix) {
         }
         return false;// Issue not found
     },
+applyIssueUpdate(id, data) {
+    return this.updateIssue(id, {
+        summary: data.summary,
+        description: data.description,
+        priority: data.priority,
+        assignedTo: data.assignedTo,
+        project: data.project,
+        dueDate: data.dueDate
+    });
+}
     // Deletes the bug(removes a bug from storage)
     deleteIssue(id) {
         let issues = this.getAllIssues();
