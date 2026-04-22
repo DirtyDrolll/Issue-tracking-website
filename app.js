@@ -1,283 +1,4 @@
-/*const issuesdata = BugStorage.getAllIssues();
 
-
-
-const prioStats = BugStorage.getPriorityStats();
-const lowprio = prioStats.low;
-const mediumprio = prioStats.medium;
-const highprio = prioStats.high;
-
-document.addEventListener('DOMContentLoaded', function() {
-    
-
-    const prioStats = BugStorage.getPriorityStats();
-
-    // Find the canvas element by its ID
-    const ctx = document.getElementById('donut_chart').getContext('2d') ;
-
-
-    // Define data
-    const chartData = {
-        labels: ['High Priority', 'Medium', 'Low'],
-        datasets: [{
-            label: 'Issues',
-            data: [highprio, mediumprio, lowprio], // Example counts
-            backgroundColor: [
-                'rgb(202, 45, 124)', 
-                'rgb(255, 199, 44)', 
-                'rgb(45, 202, 163)'
-            ],
-            hoverOffset: 6.7
-            
-        }]
-    };
-
-    // Initialize the Chart
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: chartData,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top', // Positions labels at the bottom
-                }
-            },
-            cutout: '67%' // Donut hole size
-        }
-    });
-});
-
-
-
-const totalCount = BugStorage.getAllIssues().length;
-const openCount = BugStorage.getAllIssues().reduce((sum,count)=>{return count.status === 'open' ? sum + 1 : sum},0);
-const resolvedCount = BugStorage.getAllIssues().reduce((sum,count)=>{return count.status === 'resolved' ? sum + 1 : sum},0);
-const overdueCount = BugStorage.getAllIssues().reduce((sum,count)=>{return count.status === 'overdue' ? sum + 1 : sum},0);
-
-function animateCounter(elementId, targetValue) {
-    const displayElement = document.getElementById(elementId);
-    let startValue = 0;
-    
-    // If the count is 0, just show "00" and stop
-    if (targetValue === 0) {
-        displayElement.innerHTML = "00";
-        return;
-    }
-
-    // Fixed duration divided by targetValue 
-    // This makes the speed feel consistent regardless of the number
-    let intervalSpeed = Math.floor(2000 / targetValue);
-
-    let timer = setInterval(() => {
-        startValue += 1;
-        
-        // This adds the "0" if the number is less than 10
-        displayElement.innerHTML = startValue < 10 ? "0" + startValue : startValue;
-
-        // Stop the timer when we hit the target
-        if (startValue >= targetValue) {
-            clearInterval(timer);
-        }
-    }, intervalSpeed);
-}
-
-function prioDisplay(priority){
-
-    const issuePrio = priority.toLowerCase()
-
-    if (issuePrio === "high"){
-        return 'prio-style prio-high' ;       
-    }else if(issuePrio === "medium"){
-        return 'prio-style prio-medium' ;
-    }else if (issuePrio === "low"){
-        return 'prio-style prio-low' ;
-    }
-        return 'prio-style' ;
-}
-
-
-function statusDisplay(status){
-
-    const issueStatus = status.toLowerCase()
-
-    if (issueStatus === "open"){
-        return 'status-style status-open' ;       
-    }else if(issueStatus === "resolved"){
-        return 'status-style status-resolved' ;
-    }else if (issueStatus === "overdue"){
-        return 'status-style status-overdue' ;
-    }
-        return 'status-style' ;
-}
-
-
-function dynamicStats() {
-    // Run the animation for each ID
-    const stats = BugStorage.getStats();
-
-    animateCounter('total-count', stats.total);
-    animateCounter('open-count', stats.open);
-    animateCounter('resolved-count', stats.resolved);
-    animateCounter('overdue-count', stats.overdue);
-}
-
-// Call it when the page loads
-dynamicStats();
-
-
-
-const detailtablebody = document.getElementById('detailedIssuesTable');
-
-function loadSummarisedTable() {
-    const sumtableBody = document.getElementById('recentIssuesTable');
-    if (!sumtableBody) return;
-
-    const sumContainer = BugStorage.getAllIssues();
-    let rowsHtml = ""; // Use a plural name to stay organized
-    
-    sumContainer.forEach(item => {
-        const priostyle = prioDisplay(item.priority);
-        const statusStyle =statusDisplay(item.status);
-
-        rowsHtml += `<tr>
-            <td>${item.summary}</td>
-            <td>${item.project}</td>
-            <td><span class="${priostyle}">${item.priority}</span></td>
-            <td><span class="${statusStyle}">${item.status}</span></td>
-            <td>${item.date}</td>
-        </tr>`;
-    });
-    
-    sumtableBody.innerHTML = rowsHtml; // Set it once at the 
-    
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    loadSummarisedTable();
-});
-
-
-function loadDetailedTable() {
-    const detailtablebody = document.getElementById('detailedIssuesTable');
-    if (!detailtablebody) return;
-
-    detailtablebody.innerHTML = ""; 
-    const issues = BugStorage.getAllIssues(); // Get real data
-
-    issues.forEach(item => {
-        const priostyle = prioDisplay(item.priority);
-        const statusStyle =statusDisplay(item.status);
-
-        let row = `<tr>
-            <td><small class="text-muted">${item.id}</small></td>
-            <td><strong>${item.summary}</strong></td>
-            <td>${item.project}</td>               
-            <td><span class="${priostyle}">${item.priority}</span></td>
-            <td><span class="${statusStyle}">${item.status}</span></td>
-            <td>
-                <img src="https://ui-avatars.com/api/?name=${item.assignedTo}&background=random" 
-                     style="width:24px; border-radius:50%; margin-right:5px;">
-                ${item.assignedTo}
-            </td>
-            <td>${item.date}</td>
-            <td><span class="text-dark">N/A</span></td> </tr>`;
-        
-        detailtablebody.innerHTML += row;
-    });
-}
-
-loadDetailedTable();
-
-
-
-const allsections = document.querySelectorAll('.view-section');//select all divs with that class so they can be hidden first in the fuction
-
-function ViewPage(event,viewid){
-
-    allsections.forEach(section => {
-        section.classList.add('hidden');//hide all pages first
-        
-    });
-
-    document.getElementById(viewid).classList.remove('hidden'); //removes the hide class on what ever was clicked in the nav bar
-
-
-    // Remove 'active' from all links
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-    });
-
-    // Add 'active' to the specific link that was clicked
-    event.currentTarget.classList.add('active');
-}
-
-document.querySelector('#btn-dashboard').addEventListener('click',(e) => ViewPage(e,'dashboard-content'));
-document.querySelector('#btn-issues').addEventListener('click',(e) => ViewPage(e,'issues-content'));
-document.querySelector('#btn-people').addEventListener('click',(e) => ViewPage(e,'people-content'));
-document.querySelector('#btn-projects').addEventListener('click',(e) => ViewPage(e,'projects-content'));
-
-
-
-document.querySelector('.add-btn').addEventListener('click', function() {
-    const modal = new bootstrap.Modal(document.getElementById('issueModal'));
-    modal.show();
-});
-
-
-
-// form submit
-const issueForm = document.getElementById('issueForm');
-
-issueForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const summary = document.getElementById('summary').value;
-    const description = document.getElementById('description').value;
-    const person = document.getElementById('person').value;
-    const project = document.getElementById('project').value;
-    const status = document.getElementById('status').value;
-    const priority = document.getElementById('priority').value;
-
-    try {
-        BugStorage.addIssue(summary, description, priority, status, person, project);
-        loadSummarisedTable();
-        loadDetailedTable();
-        dynamicStats();
-        displayPopup("Issue Created Successfully!"); 
-        issueForm.reset();
-
-    } catch (err) {
-        alert(err.message);
-    }
-});
-
-// load data on page start
-document.addEventListener('DOMContentLoaded', function() {
-    loadTable();
-});
-
-
-function displayPopup(text){
-    const message = document.getElementById('popup-message');
-    const container = document.getElementById('popup-container');
-
-    if (!container || !message) return;
-
-    message.innerHTML = `<strong>${text}</strong>`;
-
-    container.classList.add('show-popup');
-    setTimeout(() => {
-    container.classList.remove('show-popup');
-        }, 3000);
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        BugStorage.init();
-        
-        // Call the combined function here
-        displayPopup("Bug Storage Ready!");
-});*/
 
 /* ==========================================
    1. UI HELPER FUNCTIONS
@@ -346,27 +67,24 @@ function loadSummarisedTable() {
     if (!sumtableBody) return;
 
     const issues = BugStorage.getAllIssues();
-    let rowsHtml = ""; 
     
-    issues.forEach(item => {
-        rowsHtml += `<tr>
+    sumtableBody.innerHTML = issues.map(item => 
+       `<tr>
             <td>${item.summary}</td>
             <td>${item.project}</td>
             <td><span class="${prioDisplay(item.priority)}">${item.priority}</span></td>
             <td><span class="${statusDisplay(item.status)}">${item.status}</span></td>
             <td>${item.date}</td>
-        </tr>`;
-    });
-    sumtableBody.innerHTML = rowsHtml;
+        </tr>`).join('');
 }
 
-function loadDetailedTable() {
+function loadDetailedTable(data) {
     const detailtablebody = document.getElementById('detailedIssuesTable');
     if (!detailtablebody) return;
 
-    const issues = BugStorage.getAllIssues();
-    detailtablebody.innerHTML = issues.map(item => `
-        <tr>
+    const issues = data || BugStorage.getAllIssues();   
+    detailtablebody.innerHTML = issues.map(item => 
+       `<tr onclick="viewIssueDetails('${item.id}')" style="cursor: pointer;">
             <td><small class="text-muted">${item.id}</small></td>
             <td><strong>${item.summary}</strong></td>
             <td>${item.project}</td>               
@@ -385,9 +103,7 @@ function loadDetailedTable() {
                  Mark Fixed
                 </button>
              </td> 
-            
-        </tr>
-    `).join('');
+        </tr>`).join('');
 }
 
 /* ==========================================
@@ -425,6 +141,7 @@ function initChart() {
    ========================================== */
 
 document.addEventListener('DOMContentLoaded', function() {
+
     // 1. Storage Init
     BugStorage.init();
 
@@ -453,9 +170,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // 5. Form Submission
     const issueForm = document.getElementById('modalIssueForm');
 
-if (issueForm) {
-    issueForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+    if (issueForm) {
+        issueForm.addEventListener('submit', function(e) {
+            e.preventDefault();
 
         const summary = issueForm.querySelector('#summary').value;
         const description = issueForm.querySelector('#description').value;
@@ -465,21 +182,55 @@ if (issueForm) {
         const priority = issueForm.querySelector('#priority').value;
         const targetDate = issueForm.querySelector('#targetDate').value;
 
-        try {
-            BugStorage.addIssue(summary, description, priority, person, project, dueDate);
+            try {
+                BugStorage.addIssue(summary, description, priority, person, project, dueDate);
 
-            loadSummarisedTable();
-            loadDetailedTable();
-            dynamicStats();
+                loadSummarisedTable();
+                loadDetailedTable();
+                dynamicStats();
 
-            displayPopup("Issue Created Successfully!");
-            issueForm.reset();
+                displayPopup("Issue Created Successfully!");
+                issueForm.reset();
 
-        } catch (err) {
-            alert(err.message);
-        }
+            } catch (err) {
+                alert(err.message);
+            }
+        });
+    }
+
+    const sortableHeaders = document.querySelectorAll('.sortable-header');
+
+    sortableHeaders.forEach(header => {
+        // Optional: make sure they look clickable
+        header.style.cursor = 'pointer';
+
+        header.addEventListener('click', function() {
+            const column = this.dataset.column;
+            const currentOrder = this.dataset.order;
+
+            // Keep the toggle logic
+            const newOrder = currentOrder === 'desc' ? 'asc' : 'desc';
+            this.dataset.order = newOrder; // CSS detects this change instantly!
+
+            // Keep the data fetching
+            let issues = BugStorage.getAllIssues();
+
+            // Keep the sorting logic
+            issues.sort((a, b) => {
+                let valA = a[column] ? a[column].toString().toLowerCase() : '';
+                let valB = b[column] ? b[column].toString().toLowerCase() : '';
+                const comparison = valA.localeCompare(valB);
+                return newOrder === 'asc' ? comparison : comparison * -1;
+            });
+            // 6. Re-run your existing function to draw the table with the new order
+            loadDetailedTable(issues);
+        });
     });
-}
+
+    // load filter when the dates are changed
+    document.getElementById('filter-date-start').addEventListener('change', applyAllFilters);
+    document.getElementById('filter-date-end').addEventListener('change', applyAllFilters);
+
 });
 
     // Person Form Submission
@@ -680,3 +431,101 @@ function populateProjectDropdown() {
         projectSelect.appendChild(option);
     });
 };
+
+/* ==========================================
+   GLOBAL SEARCH & FILTER LOGIC
+   ========================================== */
+
+function applyAllFilters() {
+    const searchInput = document.getElementById('searchInput');
+    const searchTerm = searchInput.value.toLowerCase();
+    const priorityFilter = document.getElementById('filter-priority').value;
+    const statusFilter = document.getElementById('filter-status').value;
+    const statDate=document.getElementById('filter-date-start').value;
+    const endDate=document.getElementById('filter-date-end').value;
+
+    
+    // If the user is typing but isn't on the Issues page, switch views automatically
+    const issuesPage = document.getElementById('issues-content');
+    if (searchTerm.length > 0 && issuesPage.classList.contains('hidden')) {
+        const issuesBtn = document.querySelector('#btn-issues');
+        // This reuses existing ViewPage function
+        ViewPage({ currentTarget: issuesBtn }, 'issues-content');
+    }
+
+    
+        // 2. DATA FILTERING
+    const allIssues = BugStorage.getAllIssues();
+
+    const filtered = allIssues.filter(issue => {
+        // Check Search Term (Fuzzy match on text)
+        const matchesSearch = !searchTerm || 
+                              issue.id.toLowerCase().includes(searchTerm) ||
+                              issue.summary.toLowerCase().includes(searchTerm) || 
+                              issue.project.toLowerCase().includes(searchTerm) ||
+                              issue.assignedTo.toLowerCase().includes(searchTerm);
+        
+        // Check Priority (Exact match)
+        const matchesPriority = (priorityFilter === 'all') || 
+                                (issue.priority.toLowerCase() === priorityFilter.toLowerCase());
+        
+        // Check Status (Exact match)
+        const matchesStatus = (statusFilter === 'all') || 
+                              (issue.status.toLowerCase() === statusFilter.toLowerCase());
+
+
+        let matchesDate = true;
+                
+                if (startDateValue || endDateValue) {
+                    const issueDate = new Date(issue.date); // The bug's birthday
+                    
+                    if (startDateValue) {
+                        const start = new Date(startDateValue);
+                        if (issueDate < start) matchesDate = false; // does not display if its older
+                    }
+                    if (endDateValue) {
+                        const end = new Date(endDateValue);
+                        if (issueDate > end) matchesDate = false; // // does not display if its earlier
+                    }
+                }
+
+                // only return true if it passes EVERY test
+                return matchesSearch && matchesPriority && matchesStatus && matchesDate;
+            });
+
+    // render results
+    loadDetailedTable(filtered);
+}
+
+// Listen for typing in the header
+document.getElementById('searchInput').addEventListener('keyup', applyAllFilters);
+
+// Listen for dropdown changes on the Issues page
+document.getElementById('filter-priority').addEventListener('change', applyAllFilters);
+document.getElementById('filter-status').addEventListener('change', applyAllFilters);
+
+// Function to show the Details Card
+function viewIssueDetails(issueId) {
+    const issue = BugStorage.getAllIssues().find(i => i.id === issueId);
+    if (!issue) return;
+
+    // 1. Map Data to the specific display elements
+    document.getElementById('viewId').innerText = issue.id;
+    document.getElementById('viewSummary').innerText = issue.summary;
+    document.getElementById('viewProject').innerText = issue.project;
+    document.getElementById('viewAssignee').innerText = issue.assignedTo;
+    document.getElementById('viewDescription').innerText = issue.description || "No description provided.";
+
+    // 2. Status/Priority Badges (Reusing your awesome style functions)
+    const sEl = document.getElementById('viewStatus');
+    sEl.innerText = issue.status.toUpperCase();
+    sEl.className = statusDisplay(issue.status); 
+
+    const pEl = document.getElementById('viewPriority');
+    pEl.innerText = issue.priority.toUpperCase();
+    pEl.className = prioDisplay(issue.priority);
+
+    // 3. Trigger ONLY the new View Modal
+    const viewModal = new bootstrap.Modal(document.getElementById('viewDetailModal'));
+    viewModal.show();
+}

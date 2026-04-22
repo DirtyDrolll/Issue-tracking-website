@@ -18,6 +18,7 @@ body {
     background: linear-gradient(180deg, #000000 10%, #070d46 100%);
     color: white;
     position: fixed; /* Keeps sidebar from moving when you scroll */
+    z-index: 9998;
 }
 
 .sidebar-logo {
@@ -142,6 +143,7 @@ body {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    z-index: 999;
 }
 
 .total_stats{
@@ -230,6 +232,7 @@ body {
     padding: 20px;
     border-radius: 15px;
     border: 1px solid white;
+    z-index: 999;
 }
 
 .table-scroll {
@@ -253,6 +256,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    z-index: 999;
 }
 
 
@@ -282,7 +286,53 @@ table td {
     padding: 8px;
     text-align: center;
     border: 0.5px solid rgba(46, 49, 196, 0.568);
+    white-space: normal;       
+    word-wrap: break-word;     
+    max-width: 250px;          
+    vertical-align: middle;
 }
+
+table td:nth-child(4), 
+table td:nth-child(5) {
+    text-align: center;
+}
+
+table th:nth-child(1), table td:nth-child(1) {
+    width: 90px;
+}
+
+/* The Summary needs space! */
+table th:nth-child(2), table td:nth-child(2) {
+    min-width: 200px; 
+}
+
+/* Assignee needs space for the avatar and name */
+table th:nth-child(6), table td:nth-child(6) {
+    min-width: 140px;
+}
+
+/* Date Created */
+table th:nth-child(7), table td:nth-child(7) {
+    min-width: 110px;
+}
+
+.sort-icon::after {
+    content: ''; /* Empty by default */
+    margin-left: 5px;
+    font-size: 0.8rem;
+}
+
+/* When the parent th has data-order="asc", show the up arrow */
+th[data-order="asc"] .sort-icon::after {
+    content: '\25B2'; /* Hex for up arrow */
+}
+
+/* When the parent th has data-order="desc", show the down arrow */
+th[data-order="desc"] .sort-icon::after {
+    content: '\25BC'; /* Hex for down arrow */
+}
+
+
 
 /* Chart sizing fix */
 .canvas-wrapper {
@@ -356,6 +406,9 @@ table td {
 }
 
 .popup-style{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     top: 15px;
     left: 50%;
@@ -367,8 +420,15 @@ table td {
     opacity: 0;
     pointer-events: none;
 
-    height: 40px;
-    width: 150px;
+    word-wrap: break-word;       /* Older browsers */
+    overflow-wrap: break-word;   /* Modern browsers */
+    white-space: normal;         /* Ensures text doesn't stay on one long line */
+
+    height: auto; /* Changed from 40px */
+    width: auto;  /* Changed from 150px */
+    min-width: 160px;
+    min-height: 40px;
+    padding: 5px 15px;
     position:fixed; 
     background:rgba(59, 59, 59, 0.336);
     backdrop-filter: blur(10px);
@@ -425,6 +485,21 @@ table td {
 
 .status-resolved { 
     background-color: green; color: rgb(255, 255, 255); 
+}
+
+
+.glass-modal {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-modal .description-box {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* The "Fade & Slide" effect */
