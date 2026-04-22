@@ -1,7 +1,3 @@
-This is a single page application (SPA), so instead of having multiple html files we have everything in one html file stored in their own destinct <div>. The <div> will load on the web page depending on which navigation button you clicked. 
-This is for display and performance reasons. 
-
-
 ## BugStorage Object
 
 The BugStorage object manages all data storage for the bug tracker using the browser's localStorage API. It provides functions for saving, loading, updating, and deleting issues, people, projects and admin account with automatic status calculation and unique ID generation.
