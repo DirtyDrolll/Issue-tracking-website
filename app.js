@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const project = issueForm.querySelector('#project').value;
         const dueDate = issueForm.querySelector('#dueDate').value;
         const priority = issueForm.querySelector('#priority').value;
-        const targetDate = issueForm.querySelector('#targetDate').value;
+        const targetDate = issueForm.querySelector('#dueDate').value;
 
             try {
                 BugStorage.addIssue(summary, description, priority, person, project, dueDate);
