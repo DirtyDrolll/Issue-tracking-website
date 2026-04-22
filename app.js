@@ -550,6 +550,23 @@ function viewIssueDetails(issueId) {
     const viewModal = new bootstrap.Modal(document.getElementById('viewDetailModal'));
     viewModal.show();
 }
+function editIssue(id) {
+    const issue = BugStorage.getIssueById(id);
+    if (!issue) return;
+
+    const form = document.getElementById('modalIssueForm');
+
+    form.dataset.editId = id;
+
+    document.getElementById('summary').value = issue.summary;
+    document.getElementById('description').value = issue.description;
+    document.getElementById('person').value = issue.assignedTo;
+    document.getElementById('project').value = issue.project;
+    document.getElementById('dueDate').value = issue.dueDate;
+    document.getElementById('priority').value = issue.priority;
+
+    new bootstrap.Modal(document.getElementById('issueModal')).show();
+}
 function logout() {
     localStorage.removeItem("loggedIn");
     window.location.href = "login.html";
