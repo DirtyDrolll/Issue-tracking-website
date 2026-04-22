@@ -188,7 +188,7 @@ applyIssueUpdate(id, data) {
         project: data.project,
         dueDate: data.dueDate
     });
-}
+},
     // Deletes the bug(removes a bug from storage)
     deleteIssue(id) {
         let issues = this.getAllIssues();
