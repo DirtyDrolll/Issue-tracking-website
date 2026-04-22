@@ -441,8 +441,8 @@ function applyAllFilters() {
     const searchTerm = searchInput.value.toLowerCase();
     const priorityFilter = document.getElementById('filter-priority').value;
     const statusFilter = document.getElementById('filter-status').value;
-    const statDate=document.getElementById('filter-date-start').value;
-    const endDate=document.getElementById('filter-date-end').value;
+    const startDateValue = document.getElementById('filter-date-start').value;
+    const endDateValue = document.getElementById('filter-date-end').value;
 
     
     // If the user is typing but isn't on the Issues page, switch views automatically
