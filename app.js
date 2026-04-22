@@ -571,6 +571,8 @@ function editIssue(id) {
     document.getElementById('project').value = issue.project;
     document.getElementById('dueDate').value = issue.dueDate;
     document.getElementById('priority').value = issue.priority;
+    
+    document.querySelector('#modalIssueForm button[type="submit"]').innerText = "Update Issue";
 
     new bootstrap.Modal(document.getElementById('issueModal')).show();
 }
