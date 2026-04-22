@@ -532,3 +532,7 @@ function viewIssueDetails(issueId) {
     const viewModal = new bootstrap.Modal(document.getElementById('viewDetailModal'));
     viewModal.show();
 }
+function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+}
