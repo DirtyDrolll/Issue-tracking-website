@@ -1,4 +1,7 @@
-
+/*login link*/
+if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "login.html";
+}
 
 /* ==========================================
    1. UI HELPER FUNCTIONS
