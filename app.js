@@ -201,6 +201,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     issueForm.dataset.editId = "";
+    document.querySelector('#modalIssueForm button[type="submit"]').innerText = "Add Issue"; 
+                    
     displayPopup("Issue Updated Successfully!");
 } else {
     BugStorage.addIssue(summary, description, priority, person, project, dueDate);
