@@ -26,7 +26,7 @@
         <header class="header">
             <div class="search-bar">
                 <i class="bi bi-search"></i>
-                <input type="text" placeholder="Search bugs...">
+                <input type="text" id="searchInput" placeholder="Search bugs...">
             </div>
             
             <div class="header-right">
@@ -34,14 +34,17 @@
                 <div class="profile">
                     <span class="me-2 text-muted">Admin</span>
                     <div class="avatar"></div>
+                     <div>
+                      <button onclick="logout()" class="logout-btn">Logout</button>
+                     </div>
                 </div>
             </div>
         </header>
 
         <section class="page-body">
-            <div id="popup-container" class="popup-style"><p id="popup-message"></p></div>
+            <div id="popup-container" class="popup-style"><p id="popup-message" class="mb-0"></p></div>
             
-            <div id="dashboard-content" class="view-section">
+               <div id="dashboard-content" class="view-section">
                 <div class="stats_container">
 
                     <div class="total_stats">
@@ -98,54 +101,124 @@
 
                 <h3>All Issues</h3>
                 <div id="issuesList">
-                    <div class="table-container">
-                    <h5 class="section-title">Recent Issues</h5>
-                    <div class="table-scroll">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Summary</th>
-                                    <th>Project</th>
-                                    <th>Priority</th>
-                                    <th>Status</th>
-                                    <th>Assignee</th>
-                                    <th>Date Created</th>
-                                    <th>Target Date</th>
-                                </tr>
-                            </thead>
-                            <tbody id="detailedIssuesTable">
-                                </tbody>
-                        </table>
+                    <div class="fiter-container d-flex gap-3 mb-3">
+                        <select id="filter-priority" class="form-select">
+                            <option value="all">All Priorities</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+
+                        <select id="filter-status" class="form-select">
+                            <option value="all">All Statuses</option>
+                            <option value="open">Open</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="overdue">Overdue</option>
+                        </select>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <label class="small fw-bold">From:</label>
+                            <input type="date" id="filter-date-start" class="form-control form-control-sm">
+                            <label class="small fw-bold">To:</label>
+                            <input type="date" id="filter-date-end" class="form-control form-control-sm">
+                        </div>
                     </div>
-                </div>  
+
+                    <div class="table-container">
+                        <h5 class="section-title">Recent Issues</h5>
+                        <div class="table-scroll">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="sortable-header" data-column="id" data-order="desc">ID <span class="sort-icon"></span></th>
+                                        <th>Summary</th>
+                                        <th class="sortable-header" data-column="project" data-order="desc">Project <span class="sort-icon"></span></th>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                        <th class="sortable-header" data-column="assignedTo" data-order="desc">Assigned To <span class="sort-icon"></span></th>
+                                        <th class="sortable-header" data-column="dueDate" data-order="desc">Date Created <span class="sort-icon"></span></th>
+                                        <th class="sortable-header" data-column="targetDate" data-order="desc">Target Date <span class="sort-icon"></span></th>
+                                        <th>Fixed Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="detailedIssuesTable">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>  
                 </div>
+
+
+                <div class="modal fade" id="viewDetailModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content glass-modal text-white">
+                            
+                            <div class="modal-header border-0">
+                                <h5 class="modal-title">Record Details</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            
+                            <div class="modal-body">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h2 id="viewSummary" class="fw-bold mb-0"></h2>
+                                    <span id="viewId" class="badge bg-light text-dark"></span>
+                                </div>
+
+                                <div class="row g-4 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="opacity-75 small d-block">PROJECT</label>
+                                        <span id="viewProject" class="fs-5"></span>
+                                    </div>
+                                    <div class="col-md-6 text-md-end">
+                                        <label class="opacity-75 small d-block">PRIORITY</label>
+                                        <span id="viewPriority"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="opacity-75 small d-block">ASSIGNED TO</label>
+                                        <span id="viewAssignee" class="fs-5"></span>
+                                    </div>
+                                    <div class="col-md-6 text-md-end">
+                                        <label class="opacity-75 small d-block">STATUS</label>
+                                        <span id="viewStatus"></span>
+                                    </div>
+                                </div>
+
+                                <div class="description-box p-3 rounded">
+                                    <label class="opacity-75 small d-block mb-2">DESCRIPTION</label>
+                                    <p id="viewDescription" style="white-space: pre-wrap; margin-bottom: 0; line-height: 1.6;"></p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div id="people-content" class="view-section hidden">
                <h3>People</h3>
 
-<form id="personForm" class="mb-3">
-    <input type="text" id="personName" class="form-control mb-2" placeholder="Name">
-    <input type="text" id="personSurname" class="form-control mb-2" placeholder="Surname">
-    <input type="email" id="personEmail" class="form-control mb-2" placeholder="Email">
-    <input type="text" id="personUsername" class="form-control mb-2" placeholder="Username">
-    <button class="btn btn-success">Add Person</button>
-</form>
+                <form id="personForm" class="mb-3">
+                    <input type="text" id="personName" class="form-control mb-2" placeholder="Name">
+                    <input type="text" id="personSurname" class="form-control mb-2" placeholder="Surname">
+                    <input type="email" id="personEmail" class="form-control mb-2" placeholder="Email">
+                    <input type="text" id="personUsername" class="form-control mb-2" placeholder="Username">
+                    <button class="btn btn-success">Add Person</button>
+                </form>
 
-            <div id="peopleList"></div>
+                <div id="peopleList"></div>
             </div>
 
 
             <div id="projects-content" class="view-section hidden">
                <h3>Projects</h3>
 
-<form id="projectForm" class="mb-3">
-    <input type="text" id="projectName" class="form-control mb-2" placeholder="Project Name">
-    <button class="btn btn-warning">Add Project</button>
-</form>
+                <form id="projectForm" class="mb-3">
+                    <input type="text" id="projectName" class="form-control mb-2" placeholder="Project Name">
+                    <button class="btn btn-warning">Add Project</button>
+                </form>
 
-<div id="projectsList"></div>
+                <div id="projectsList"></div>
             </div>
 
         </section>
@@ -154,50 +227,54 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="storage.js"></script>
+     <script src="info.js"></script>
     <script src="app.js"></script>
 
-<div class="modal fade" id="issueModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal fade" id="issueModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
-      <div class="modal-header">
-        <h5 class="modal-title">Create Issue</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
+        <div class="modal-header">
+            <h5 class="modal-title">Create Issue</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
 
-      <div class="modal-body">
+        <div class="modal-body">
 
-        <form id="modalIssueForm" data-edit-id="">
+        <form id="modalIssueForm" data-edit-id=""> 
 
-            <input type="text" id="summary" class="form-control mb-2" placeholder="Summary" required>
+                <input type="text" id="summary" class="form-control mb-2" placeholder="Summary" required>
 
             <textarea id="description" class="form-control mb-2" placeholder="Description" required></textarea>
+           
+                 <select id="person" class="form-control mb-2" required>
+                    <option value="">Select Assignee</option>
+                          </select>
 
-            <input type="text" id="person" class="form-control mb-2" placeholder="Assigned To" required>
+    
+             <select id="project" class="form-control mb-2" required>
+                  <option value="">Select Project</option>
+                                  </select>
 
-            <input type="text" id="project" class="form-control mb-2" placeholder="Project" required>
+            
+           
+            <input type="date" id="dueDate" class="form-control mb-2" required>
 
-            <select id="status" class="form-control mb-2" required>
-                <option value="open">Open</option>
-                <option value="resolved">Resolved</option>
-                <option value="overdue">Overdue</option>
-            </select>
+                <select id="priority" class="form-control mb-2" required>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
 
-            <select id="priority" class="form-control mb-2" required>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-            </select>
+                <button type="submit" class="btn btn-primary w-100">Add Issue</button>
 
-            <button type="submit" class="btn btn-primary w-100">Add Issue</button>
+            </form>
 
-        </form>
+        </div>
 
-      </div>
-
+        </div>
     </div>
-  </div>
-</div>
+    </div>
     
 </body>
 </html>

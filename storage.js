@@ -5,6 +5,7 @@ const BugStorage = {
     issuesKey: 'bugTracker_issues',
     peopleKey: 'bugTracker_people',
     projectsKey: 'bugTracker_projects',
+    adminKey: 'bugTracker_admin',
     //Prevents someone from adding a bug like <script>alert("hacked")</script> that could run malicious code.
     sanitize(str) {
     if (typeof str !== 'string') return '';
@@ -25,6 +26,7 @@ const BugStorage = {
         if (!localStorage.getItem(this.projectsKey)) {
             localStorage.setItem(this.projectsKey, JSON.stringify([]));
         }
+         this.initAdmin(); 
     },
     // Generates ID's
 /*
@@ -90,6 +92,32 @@ getNextId(items, prefix) {
         }
         return null;
     },
+
+    // Get admin from storage (retrieves admin object or returns null if none exists)
+    getAdmin() {
+    const data = localStorage.getItem(this.adminKey);
+    return data ? JSON.parse(data) : null;
+},
+   // Save admin to storage (stores or updates the admin object in localStorage)
+    setAdmin(adminData) {
+    localStorage.setItem(this.adminKey, JSON.stringify(adminData));
+},
+   // Create default admin (runs on page load, creates default admin if none exists)
+    initAdmin() {
+        if (!localStorage.getItem(this.adminKey)) {
+            const defaultAdmin = {
+                id: "ADM-001",
+                name: "System Administrator",
+                email: "admin@bugtracker.com",
+                role: "admin",
+                password: "admin@123",
+                permissions: ["view_all", "edit_all", "delete_all", "manage_users"]
+            };
+            localStorage.setItem(this.adminKey, JSON.stringify(defaultAdmin));
+        }
+    },
+    
+
     // Add new issue - saves a bug report to storage
     //No status parameter! Status is always "open" for new issues
     addIssue(summary, description, priority, assignedTo, project,dueDate) {
@@ -112,7 +140,7 @@ getNextId(items, prefix) {
         assignedTo: this.sanitize(assignedTo),
         project: this.sanitize(project),
         date: date,
-        dueDate: dueDate || null,          // Optional deadline
+        dueDate: dueDate ? this.sanitize(dueDate) : null,          // Optional deadline
         fixedDate: null                    // Not fixed yet
         };
         // Adds to front so newest bugs show first
@@ -343,6 +371,7 @@ getNextId(items, prefix) {
         localStorage.setItem(this.issuesKey, JSON.stringify([]));
         localStorage.setItem(this.peopleKey, JSON.stringify([]));
         localStorage.setItem(this.projectsKey, JSON.stringify([]));
+        localStorage.setItem(this.adminKey, JSON.stringify([])); 
     }
 };
 
