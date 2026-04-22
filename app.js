@@ -161,6 +161,15 @@ document.addEventListener('DOMContentLoaded', function() {
     loadProjectsList();
     displayPopup("Bug Storage Ready!");
 
+
+    // Listen for typing in the header
+    document.getElementById('searchInput').addEventListener('keyup', applyAllFilters);
+    
+    // Listen for dropdown changes on the Issues page
+    document.getElementById('filter-priority').addEventListener('change', applyAllFilters);
+    document.getElementById('filter-status').addEventListener('change', applyAllFilters);
+
+
     // 3. Navigation Listeners
     document.querySelector('#btn-dashboard').addEventListener('click', (e) => ViewPage(e, 'dashboard-content'));
     document.querySelector('#btn-issues').addEventListener('click', (e) => ViewPage(e, 'issues-content'));
@@ -520,12 +529,6 @@ function applyAllFilters() {
     loadDetailedTable(filtered);
 }
 
-// Listen for typing in the header
-document.getElementById('searchInput').addEventListener('keyup', applyAllFilters);
-
-// Listen for dropdown changes on the Issues page
-document.getElementById('filter-priority').addEventListener('change', applyAllFilters);
-document.getElementById('filter-status').addEventListener('change', applyAllFilters);
 
 // Function to show the Details Card
 function viewIssueDetails(issueId) {
