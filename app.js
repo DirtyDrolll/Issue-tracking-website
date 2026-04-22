@@ -70,7 +70,12 @@ function loadSummarisedTable() {
     if (!sumtableBody) return;
 
     //stores only records that have the open status and within the 5 most recent issues
-    const issues = BugStorage.getAllIssues();
+    const issues = BugStorage.getAllIssues()
+        .filter(item => item.status.toLowerCase() === 'open')
+        // Reverses the records to display the highest id first
+        .sort((a, b) => {
+            return b.id.localeCompare(a.id, undefined, { numeric: true });
+        }).slice(0, 5);
     
     sumtableBody.innerHTML = issues.map(item => 
        `<tr>
