@@ -56,7 +56,7 @@ const project = [
     },
     {
         projectId: "p10212",
-        name: "Webiste Redesign"
+        name: "Website Redesign"
         
     },
     {
