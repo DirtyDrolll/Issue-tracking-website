@@ -66,94 +66,58 @@ The BugStorage object manages all data storage for the bug tracker using the bro
 * Data survives page refresh and browser restarts
 * Storage keys used: **bugTracker_issues**, **bugTracker_people**, **bugTracker_projects**, **bugTracker_admin**
 
-Issue Management System (SPA)
+## Issue Management System (SPA)
 
 The Issue Management System is a single-page application built using HTML, CSS, and JavaScript. It manages all bug tracking functionality inside one page without reloading, allowing users to navigate between sections dynamically.
 
-What the Issue Management System Does:
+### What the Issue Management System Does:
 
-Navigation System
+**Navigation System**
+* Allows switching between Dashboard, Issues, People, and Projects  
+* Uses JavaScript (`ViewPage()` function) to show and hide sections dynamically  
+* Ensures only one section is visible at a time for a clean interface  
 
-Allows switching between Dashboard, Issues, People, and Projects
+**Issue Management (Core Functionality)**
+* Users can create new issues using a modal form  
+* Issues can be edited using the edit function (`dataset.editId` system)  
+* Issues can be marked as fixed or resolved  
+* Issues are displayed in both summary and detailed tables  
 
-Uses JavaScript (ViewPage() function) to show and hide sections dynamically
+**Search, Filter & Sorting**
+* Users can search issues by ID, summary, project, or assigned person  
+* Filters allow sorting by priority, status, and date range  
+* Table columns can be sorted in ascending or descending order  
 
-Ensures only one section is visible at a time for a clean interface
+**Dashboard Features**
+* Displays live statistics (total, open, resolved, overdue issues)  
+* Uses animated counters for better visual feedback  
+* Shows a priority distribution chart using Chart.js  
 
+**People & Projects Management**
+* Users can add and delete people (team members)  
+* Users can add and delete projects  
+* Dropdowns are dynamically populated when creating issues  
 
-Issue Management (Core Functionality)
+**Notifications & UI Feedback**
+* Popup messages display success or error feedback  
+* Visual badges show priority and status styling  
+* User actions update the UI instantly without refresh  
 
-Users can create new issues using a modal form
+**Data Storage**
+* All data is stored using browser localStorage via the BugStorage system  
+* No backend is required  
+* Data persists even after page refresh  
 
-Issues can be edited using the edit function (dataset.editId system)
+### How It Works:
 
-Issues can be marked as fixed or resolved
+**Initialization**
+* When the page loads, all data is loaded from localStorage  
+* Tables, charts, and counters are rendered automatically  
+* Navigation and event listeners are attached in `DOMContentLoaded`  
 
-Issues are displayed in both summary and detailed tables
+**User Interaction Flow**
+* Users navigate using the sidebar menu  
+* Issues are created, updated, or filtered in real time  
+* All changes instantly update the UI and storage  
+* Dashboard updates automatically based on stored data
 
-
-Search, Filter & Sorting
-
-Users can search issues by ID, summary, project, or assigned person
-
-Filters allow sorting by priority, status, and date range
-
-Table columns can be sorted in ascending or descending order
-
-
-Dashboard Features
-
-Displays live statistics (total, open, resolved, overdue issues)
-
-Uses animated counters for better visual feedback
-
-Shows a priority distribution chart using Chart.js
-
-
-People & Projects Management
-
-Users can add and delete people (team members)
-
-Users can add and delete projects
-
-Dropdowns are dynamically populated when creating issues
-
-
-Notifications & UI Feedback
-
-Popup messages display success or error feedback
-
-Visual badges show priority and status styling
-
-User actions update the UI instantly without refresh
-
-
-Data Storage
-
-All data is stored using browser localStorage via the BugStorage system
-
-No backend is required
-
-Data persists even after page refresh
-
-
-How It Works:
-
-Initialization
-
-When the page loads, all data is loaded from localStorage
-
-Tables, charts, and counters are rendered automatically
-
-Navigation and event listeners are attached in DOMContentLoaded
-
-
-User Interaction Flow
-
-Users navigate using the sidebar menu
-
-Issues are created, updated, or filtered in real time
-
-All changes instantly update the UI and storage
-
-Dashboard updates automatically based on stored data
