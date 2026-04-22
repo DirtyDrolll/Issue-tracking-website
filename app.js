@@ -103,6 +103,9 @@ function loadDetailedTable(data) {
             <td><span class="text-dark">${item.dueDate}</span></td> 
             <td><span class="text-dark">${item.fixedDate}</span></td> 
             <td>
+                <button class="btn btn-sm btn-warning" onclick="editIssue('${item.id}')">
+                   Edit
+                 </button>
                <button class="btn btn-sm btn-success" onclick="markFixed('${item.id}')">
                  Mark Fixed
                 </button>
