@@ -178,10 +178,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 4. Modal Trigger
     document.querySelector('.add-btn').addEventListener('click', () => {
-         populatePersonDropdown();   
-         populateProjectDropdown(); 
-        new bootstrap.Modal(document.getElementById('issueModal')).show();
-    });
+    const form = document.getElementById('modalIssueForm');
+
+    form.reset();
+    form.dataset.editId = "";
+
+    document.querySelector('#modalIssueForm button[type="submit"]').innerText = "Add Issue";
+
+    populatePersonDropdown();   
+    populateProjectDropdown(); 
+
+    new bootstrap.Modal(document.getElementById('issueModal')).show();
+});
 
     // 5. Form Submission
     const issueForm = document.getElementById('modalIssueForm');
