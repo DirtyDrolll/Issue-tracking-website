@@ -153,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
     BugStorage.init();
 
     // 2. Initial Data Load
+    seedInitialData();
     loadSummarisedTable();
     loadDetailedTable();
     dynamicStats();
